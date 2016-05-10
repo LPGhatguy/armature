@@ -3,6 +3,14 @@ import { Template, TagName, ClassNames } from "./Decorators";
 
 export type ArmTemplate = (component: Component) => string;
 
+export interface DeflatedComponent {
+	type: string;
+	data: any;
+	id: number;
+	label: string;
+	children?: DeflatedComponent[];
+}
+
 @TagName("arm-component")
 @Template(() => "")
 export default class Component {
@@ -21,6 +29,68 @@ export default class Component {
 	constructor(data: any) {
 		this.$data = data;
 		this.$id = UUID();
+	}
+
+	static $for(parent: Component, label: string, data: any) {
+		const identifier = this.$getIdentifier(label);
+
+		const existing = parent.$children.find(v => v.$getIdentifier() === identifier);
+
+		if (existing) {
+			return existing;
+		}
+
+		const inst = new this(data);
+		inst.$label = label;
+		inst.$parent = parent;
+
+		parent.$children.push(inst);
+
+		return inst;
+	}
+
+	$deflate(): DeflatedComponent {
+		const thisClass = <typeof Component>this.constructor;
+
+		return {
+			type: thisClass.$tagName, // TODO: change?
+			data: this.$data,
+			id: this.$id,
+			label: this.$label,
+			children: this.$children.map(v => v.$deflate())
+		};
+	}
+
+	static $inflate(deflated: DeflatedComponent, inst?: Component) {
+		const thisClass = <typeof Component>this.constructor;
+
+		if (!inst) {
+			inst = new thisClass(deflated.data);
+		}
+
+		inst.$id = deflated.id;
+		inst.$label = deflated.label;
+
+		if (deflated.children) {
+			for (let child of deflated.children) {
+				const thatClass = this; // TODO
+
+				const childInst = thatClass.$for(inst, child.label, child.data);
+				thatClass.$inflate(child, childInst);
+			}
+		}
+
+		return inst;
+	}
+
+	static $getIdentifier(label: string) {
+		return this.$tagName + "__" + label;
+	}
+
+	$getIdentifier() {
+		const thisClass = <typeof Component>this.constructor;
+
+		return thisClass.$tagName + "__" + this.$label;
 	}
 
 	$getHTML() {
@@ -75,7 +145,7 @@ export default class Component {
 		}
 	}
 
-	$bind() {
+	$reify() {
 		this.$ensureElement();
 		this.$render();
 		this.$hydrate();

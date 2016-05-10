@@ -4,9 +4,11 @@
 		"target": "ES5",
 		"moduleResolution": "node",
 		"experimentalDecorators": true,
-		"noEmitOnError": true
+		"noEmitOnError": true,
+		"noLib": true
 	},
 	"files": [
-		"src/index.ts"
+		"src/index.ts",
+		"node_modules/typescript/lib/lib.es6.d.ts"
 	]
 }
