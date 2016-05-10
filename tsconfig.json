@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "ES5",
+		"moduleResolution": "node",
+		"experimentalDecorators": true,
+		"noEmitOnError": true
+	},
+	"files": [
+		"src/index.ts"
+	]
+}

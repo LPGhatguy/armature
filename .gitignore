@@ -1,0 +1,12 @@
+# Build System
+*.log
+
+# User
+build.user.conf.js
+
+# Outputs
+debug/
+es5/
+
+# Modules
+node_modules/
