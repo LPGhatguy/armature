@@ -1,5 +1,5 @@
 {
-  "name": "armature",
+  "name": "@lpghatguy/armature",
   "version": "0.1.0",
   "description": "Modern component model for ES6",
   "main": "es5/index.js",
