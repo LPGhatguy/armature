@@ -62,10 +62,8 @@ export default class Component {
 	}
 
 	static $inflate(deflated: DeflatedComponent, inst?: Component) {
-		const thisClass = <typeof Component>this.constructor;
-
 		if (!inst) {
-			inst = new thisClass(deflated.data);
+			inst = new this(deflated.data);
 		}
 
 		inst.$id = deflated.id;
