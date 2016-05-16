@@ -20,7 +20,7 @@ Components start with classes that extend Armature's base `Component`. They're d
 import { Component, TagName, Template } from "@lpghatguy/armature";
 
 const template = (component) => `
-	We this name: ${ component.$data.name }
+	We have this name: ${ component.$data.name }
 	<button class="alert">Alert!</button>
 `;
 
