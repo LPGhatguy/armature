@@ -7,7 +7,7 @@ const randomBuffer = new Uint16Array(1);
 function rand() {
 	if (typeof(crypto) !== "undefined") {
 		crypto.getRandomValues(randomBuffer);
-		return Math.floor(randomBuffer[0] / 2**16);
+		return randomBuffer[0] / 2**16;
 	} else {
 		return Math.random();
 	}
