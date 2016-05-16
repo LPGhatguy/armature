@@ -6,7 +6,7 @@ export type ArmTemplate = (component: Component) => string;
 export interface DeflatedComponent {
 	type: string;
 	data: any;
-	id: number;
+	id: string;
 	label: string;
 	children?: DeflatedComponent[];
 }
@@ -19,7 +19,7 @@ export default class Component {
 	$template: ArmTemplate;
 
 	$data: any;
-	$id: number;
+	$id: string;
 	$label: string;
 
 	$element: HTMLElement;
@@ -28,7 +28,7 @@ export default class Component {
 
 	constructor(data: any) {
 		this.$data = data;
-		this.$id = UUID();
+		this.$id = UUID.get();
 	}
 
 	static $for(parent: Component, label: string, data: any) {
