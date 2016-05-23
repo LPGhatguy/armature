@@ -12,7 +12,7 @@ Additionally, Armature requires the following ES2015 APIs:
 To use Armature in environments older than ES2015, a polyfill like `core-js` is recommended.
 
 ## Examples
-** All examples are written in ES2015 plus decorators, which is also valid TypeScript**
+**All examples are written in ES2015 plus decorators, which is also valid TypeScript**
 
 Components start with classes that extend Armature's base `Component`. They're decorated to include data about the component.
 
