@@ -23,8 +23,15 @@ describe("The default component", () => {
 		expect(body).to.contain(Component.$tagName);
 	});
 
+	it("should properly serialize data", () => {
+		const inst = new Component({ x: 5 });
+		const serialized = inst.$serializeData();
+
+		expect(serialized.x).to.equal(inst.$data.x);
+	});
+
 	it("should be deflatable", () => {
-		const inst = new Component({x: 5});
+		const inst = new Component({ x: 5 });
 
 		const deflated = inst.$deflate();
 
@@ -32,7 +39,7 @@ describe("The default component", () => {
 	});
 
 	it("should be inflatable", () => {
-		const inst = new Component({x: 5});
+		const inst = new Component({ x: 5 });
 
 		const deflated = inst.$deflate();
 		const reinst = Component.$inflate(deflated);
