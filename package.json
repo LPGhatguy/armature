@@ -3,6 +3,7 @@
   "version": "0.1.3",
   "description": "Modern component model for ES6",
   "main": "es5/index.js",
+  "browser": "es5/bundle.js",
   "typings": "es5/index.d.ts",
   "dependencies": {},
   "devDependencies": {

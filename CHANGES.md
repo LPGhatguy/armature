@@ -3,6 +3,8 @@
 ## HEAD
 - Reformatted Karma configuration
 - Expanded test suite
+- Added `browser` field to point Browserify to existing bundle
+- Browserify bundle is now standalone, which allows for better consumption
 
 ## 0.1.3
 - Added `Component#$getTypeName()`
