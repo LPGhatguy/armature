@@ -21,6 +21,10 @@ const server = {
 		noEmitOnError: true,
 		experimentalDecorators: true,
 		noLib: true
+	},
+	browserify: {
+		standalone: "armature",
+		bare: true
 	}
 };
 
