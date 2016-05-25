@@ -4,7 +4,7 @@ import { Template, TagName, ClassNames } from "./Decorators";
 export type ArmTemplate = (component: Component) => string;
 
 /**
- * A data structure representing one or more components
+ * A data structure representing one or more components.
  */
 export interface DeflatedComponent {
 	type: string;
@@ -15,21 +15,56 @@ export interface DeflatedComponent {
 }
 
 /**
- * The base for all Armature components
+ * The base for all Armature components.
  */
 @TagName("arm-component")
 @Template(() => "")
 export default class Component {
+	/**
+	 * A list of class names to apply to the component's root element.
+	 */
 	static $classNames: string[] = [];
+
+	/**
+	 * The HTML tag this component type will be using when reified.
+	 */
 	static $tagName: string;
+
+	/**
+	 * The template used to render this component.
+	 * Use @Template to specify the template for a component type.
+	 */
 	$template: ArmTemplate;
 
+	/**
+	 * The state backing this component.
+	 */
 	$data: any;
+
+	/**
+	 * The globally unique identifier for this component.
+	 */
 	$id: string;
+
+	/**
+	 * The label identifying this component.
+	 * This is unique among all siblings of this component.
+	 */
 	$label: string;
 
+	/**
+	 * The element representing this component, if one exists.
+	 */
 	$element: HTMLElement;
+
+	/**
+	 * The components this component contains.
+	 */
 	$children: Component[] = [];
+
+	/**
+	 * The component containing this component, if one exists.
+	 */
 	$parent: Component;
 
 	/**
@@ -81,13 +116,22 @@ export default class Component {
 	}
 
 	/**
+	 * Returns a way to uniquely identify this component type.
+	 */
+	static $getTypeName() {
+		const classString = this.$classNames.map(v => "." + v).join("");
+
+		return this.$tagName + classString;
+	}
+
+	/**
 	 * Creates an object that can be used to recreate this component.
 	 */
 	$deflate(): DeflatedComponent {
 		const thisClass = <typeof Component>this.constructor;
 
 		return {
-			type: thisClass.$tagName, // TODO: change?
+			type: thisClass.$getTypeName(),
 			data: this.$serializeData(),
 			id: this.$id,
 			label: this.$label,
@@ -127,7 +171,7 @@ export default class Component {
 	 * @param label The label of the component to create the label for
 	 */
 	static $getIdentifier(label: string) {
-		return this.$tagName + "__" + label;
+		return this.$getTypeName() + "__" + label;
 	}
 
 	/**

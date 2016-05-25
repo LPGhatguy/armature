@@ -49,3 +49,15 @@ const hello = new HelloWorld({
 hello.$reify();
 document.body.appendChild(hello.$element);
 ```
+
+## Building
+Download the source, and then install dependencies and their typings using [typings](https://www.npmjs.com/package/typings):
+
+```sh
+npm install
+typings install
+```
+
+Use `npm run build` to build the source once, or use `npm run dev` to continuously rebuild the source as it changes.
+
+Tests can be run on both Node.js and via Karma using `npm test`.

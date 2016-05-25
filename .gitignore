@@ -10,3 +10,4 @@ es5/
 
 # Modules
 node_modules/
+typings/

@@ -24,22 +24,22 @@ const server = {
 	}
 };
 
+const tests = {
+	tyepscript: Object.assign({}, server.typescript, {
+		allowJs: true
+	})
+}
+
 const config = {
 	browsersync: false,
 
 	// Default preset
-	preset: "debug",
+	preset: "default",
 
 	// Collection of presets
 	presets: {
-		debug: {
+		default: {
 			watch: true,
-			sourcemaps: true,
-			minify: false,
-			out: "debug"
-		},
-		release: {
-			watch: false,
 			sourcemaps: true,
 			minify: false,
 			out: "es5"
@@ -49,6 +49,7 @@ const config = {
 	// List of pipelines to build and use
 	pipelines: [
 		{
+			id: "lib",
 			name: "Library (CommonJS)",
 			config: server,
 			type: "server",
@@ -73,7 +74,18 @@ const config = {
 			output: "bundle.js",
 
 			extraEntries: ["node_modules/typescript/lib/lib.es6.d.ts"]
-		}
+		},
+		{
+			id: "tests",
+			name: "Tests (Bundle)",
+			config: tests,
+			type: "browser",
+
+			input: "tests/main.js",
+			output: "test.js",
+
+			extraEntries: ["node_modules/typescript/lib/lib.es6.d.ts", "typings/index.d.ts"]
+		},
 	]
 };
 
