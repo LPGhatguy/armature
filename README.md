@@ -11,6 +11,30 @@ Additionally, Armature requires the following ES2015 APIs:
 
 To use Armature in environments older than ES2015, a polyfill like `core-js` is recommended.
 
+## Usage
+
+### ES6 and TypeScript
+```js
+import { Component } from "armature";
+
+console.log(Component) // yay
+```
+
+### CommonJS
+```js
+const armature = require("armature");
+const Component = armature.Component;
+
+console.log(Component) // yay
+```
+
+### Global
+Armature is exposed as `armature` when no module system is detected.
+
+```js
+console.log(armature.Component); // yay
+```
+
 ## Examples
 **All examples are written in ES2015 plus decorators, which is also valid TypeScript**
 
