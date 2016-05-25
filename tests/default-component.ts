@@ -1,33 +1,30 @@
-import { Component, TagName } from "../";
+import { Component } from "../";
 import { expect } from "chai";
 
 declare var global;
 
-const isBrowser = global.window;
+const isBrowser = !!global.document;
 
-describe("A default component", () => {
-	class ND extends Component {
-	}
-
+describe("The default component", () => {
 	it("should be instantiable", () => {
-		const inst = new ND({});
+		const inst = new Component({});
 	});
 
 	it("should store the given data", () => {
-		const inst = new ND({x: 5});
+		const inst = new Component({x: 5});
 
 		expect(inst.$data.x).to.equal(5);
 	});
 
 	it("should produce HTML when asked", () => {
-		const inst = new ND({});
+		const inst = new Component({});
 
 		const body = inst.toString();
-		expect(body).to.contain(ND.$tagName);
+		expect(body).to.contain(Component.$tagName);
 	});
 
 	it("should be deflatable", () => {
-		const inst = new ND({x: 5});
+		const inst = new Component({x: 5});
 
 		const deflated = inst.$deflate();
 
@@ -35,30 +32,44 @@ describe("A default component", () => {
 	});
 
 	it("should be inflatable", () => {
-		const inst = new ND({x: 5});
+		const inst = new Component({x: 5});
 
 		const deflated = inst.$deflate();
-		const reinst = ND.$inflate(deflated);
+		const reinst = Component.$inflate(deflated);
 
 		expect(reinst.$data.x).to.equal(5);
 	});
 
 	it("should expose a consistent identifier", () => {
-		const inst = new ND({});
+		const inst = new Component({});
 
-		expect(inst.$getIdentifier()).to.equal(ND.$getIdentifier(inst.$label));
+		expect(inst.$getIdentifier()).to.equal(Component.$getIdentifier(inst.$label));
+	});
+
+	it("should properly nest", () => {
+		const parent = new Component({});
+		const child = Component.$for(parent, "", {});
+
+		expect(parent.$children).to.contain(child);
 	});
 
 	if (isBrowser) {
+		it("should have an element after being ensured", () => {
+			const inst = new Component({});
+			inst.$ensureElement();
+
+			expect(inst.$element).to.be.instanceof(Element);
+		});
+
 		it("should created an element when reified", () => {
-			const inst = new ND({});
+			const inst = new Component({});
 			inst.$reify();
 
 			expect(inst.$element).to.be.instanceof(Element);
 		});
 
 		it("should attach to existing elements", () => {
-			const inst = new ND({});
+			const inst = new Component({});
 
 			const el = document.createElement("arm-component");
 			inst.$attachTo(el);
