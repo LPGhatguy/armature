@@ -1,5 +1,9 @@
 # Armature Change Log
 
+## HEAD
+- Reformatted Karma configuration
+- Expanded test suite
+
 ## 0.1.3
 - Added `Component#$getTypeName()`
 - Updated `Component#getIdentifier` to use `getTypeName`
