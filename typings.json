@@ -4,5 +4,8 @@
   },
   "globalDevDependencies": {
     "mocha": "registry:dt/mocha#2.2.5+20160317120654"
+  },
+  "dependencies": {
+    "object-assign": "registry:npm/object-assign#4.0.1+20160301180549"
   }
 }

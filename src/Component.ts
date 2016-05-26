@@ -1,6 +1,8 @@
 import UUID from "./UUID";
 import { Template, TagName, ClassNames } from "./Decorators";
 
+import assign = require("object-assign");
+
 export type ArmTemplate = (component: Component) => string;
 
 /**
@@ -112,7 +114,7 @@ export default class Component {
 	 * Serializes the component's data for potential recreation.
 	 */
 	$serializeData() {
-		return Object.assign({}, this.$data);
+		return assign({}, this.$data);
 	}
 
 	/**

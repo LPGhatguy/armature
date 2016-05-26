@@ -11,7 +11,7 @@ describe("The default component", () => {
 	});
 
 	it("should store the given data", () => {
-		const inst = new Component({x: 5});
+		const inst = new Component({ x: 5 });
 
 		expect(inst.$data.x).to.equal(5);
 	});
@@ -28,6 +28,7 @@ describe("The default component", () => {
 		const serialized = inst.$serializeData();
 
 		expect(serialized.x).to.equal(inst.$data.x);
+		expect(serialized).to.not.equal(inst.$data);
 	});
 
 	it("should be deflatable", () => {

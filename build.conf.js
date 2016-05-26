@@ -61,7 +61,7 @@ const config = {
 			input: "src/**/*.ts",
 			output: "",
 
-			extraEntries: ["node_modules/typescript/lib/lib.es6.d.ts"],
+			extraEntries: ["node_modules/typescript/lib/lib.es6.d.ts", "typings/index.d.ts"],
 
 			typingsOutput: "",
 			typingsOutputType: "module",
@@ -77,7 +77,7 @@ const config = {
 			input: "src/index.ts",
 			output: "bundle.js",
 
-			extraEntries: ["node_modules/typescript/lib/lib.es6.d.ts"]
+			extraEntries: ["node_modules/typescript/lib/lib.es6.d.ts", "typings/index.d.ts"]
 		},
 		{
 			id: "tests",
