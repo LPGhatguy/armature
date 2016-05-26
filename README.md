@@ -10,11 +10,6 @@ Armature leverages the power of classes, decorators, and template strings to red
 ## Requirements
 Armature releases are compiled to ES5 and should run on any compliant ES5 runtime.
 
-Additionally, Armature requires the following ES2015 APIs:
-- `Object.assign`
-
-To use Armature in environments older than ES2015, a polyfill like `core-js` is recommended.
-
 ## Usage
 
 ### ES6 and TypeScript
@@ -24,7 +19,7 @@ import { Component } from "armature";
 console.log(Component) // yay
 ```
 
-### CommonJS
+### CommonJS (Node and Browserify)
 ```js
 const armature = require("armature");
 const Component = armature.Component;
