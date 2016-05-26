@@ -1,6 +1,6 @@
 # Armature Change Log
 
-## HEAD
+## 0.1.4
 - Reformatted Karma configuration
 - Expanded test suite
 - Removed default export on `armature/Component`
