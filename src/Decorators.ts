@@ -1,4 +1,4 @@
-import Component, { ArmTemplate } from "./Component";
+import { Component, ArmTemplate } from "./Component";
 
 /**
  * Attaches a template to a Component

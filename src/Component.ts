@@ -21,7 +21,7 @@ export interface DeflatedComponent {
  */
 @TagName("arm-component")
 @Template(() => "")
-export default class Component {
+export class Component {
 	/**
 	 * A list of class names to apply to the component's root element.
 	 */
