@@ -3,6 +3,7 @@
 ## HEAD
 - Reformatted Karma configuration
 - Expanded test suite
+- Removed default export on `armature/Component`
 - Browserify bundle is now standalone, which allows for better consumption
 
 ## 0.1.3
