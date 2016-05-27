@@ -209,7 +209,9 @@ export class Component {
 	$ensureElement() {
 		if (!this.$element) {
 			const thisClass = <typeof Component>this.constructor;
+
 			const el = document.createElement(thisClass.$tagName);
+			el.classList.add(...thisClass.$classNames);
 
 			this.$attachTo(el);
 		}
@@ -241,6 +243,10 @@ export class Component {
 
 		if (el) {
 			this.$element = el;
+
+			this.$children.forEach(child => {
+				child.$locate(el);
+			});
 
 			return el;
 		}
