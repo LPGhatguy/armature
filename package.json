@@ -1,6 +1,6 @@
 {
   "name": "@lpghatguy/armature",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Modern component model for ES6",
   "main": "es5/index.js",
   "typings": "es5/index.d.ts",
