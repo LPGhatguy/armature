@@ -1,7 +1,8 @@
 # Armature Change Log
 
-## HEAD
+## 1.0.0-alpha1
 - Deprecated old decorators, added `@Properties`
+- Changed `data-id` attribute to `data-armid` like React's `data-reactid`
 - `$inflate` and `$deflate` now properly behave with nested components
 - Added `ComponentStore`, which is added to when `@Properties` is used
 - `Component#$locate` is now recursive
