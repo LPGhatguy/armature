@@ -5,8 +5,6 @@ const ComponentStore = {
 
 	register(componentType: typeof Component) {
 		this.store.set(componentType.$getTypeName(), componentType);
-
-		console.log("Registered", componentType.name, "as", componentType.$getTypeName());
 	},
 
 	get(typeName: string) {
