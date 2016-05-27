@@ -1,6 +1,6 @@
 # Armature
 ```sh
-npm install @lpghatguy/armature --save
+npm install armature --save
 ```
 
 Armature is a modern component model targeted at TypeScript and ES2015+ workflows. It runs in browsers and servers alike, allowing for a full-featured isomorphic view system without the complexity of larger frameworks.
