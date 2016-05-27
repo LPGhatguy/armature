@@ -1,5 +1,6 @@
 import UUID from "./UUID";
 import { Template, TagName, ClassNames } from "./Decorators";
+import ComponentStore from "./ComponentStore";
 
 import assign = require("object-assign");
 
@@ -157,7 +158,7 @@ export class Component {
 
 		if (deflated.children) {
 			for (let child of deflated.children) {
-				const thatClass = this; // TODO
+				const thatClass = ComponentStore.get(child.type);
 
 				const childInst = thatClass.$for(inst, child.label, child.data);
 				thatClass.$inflate(child, childInst);

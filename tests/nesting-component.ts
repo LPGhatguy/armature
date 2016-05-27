@@ -24,7 +24,7 @@ describe("A nesting component", () => {
 	class Child extends Component {
 	}
 
-	it("should have recall children correctly", () => {
+	it("should recall children correctly", () => {
 		const parent = new Parent({});
 		const child = Child.$for(parent, "", null);
 

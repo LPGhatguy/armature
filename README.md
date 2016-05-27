@@ -40,15 +40,17 @@ console.log(armature.Component); // yay
 Components start with classes that extend Armature's base `Component`. They're decorated to include data about the component.
 
 ```ts
-import { Component, TagName, Template } from "@lpghatguy/armature";
+import { Component, Properties } from "@lpghatguy/armature";
 
 const template = (component) => `
 	We have this name: ${ component.$data.name }
 	<button class="alert">Alert!</button>
 `;
 
-@TagName("hello-world")
-@Template(template)
+@Properties({
+	tag: "hello-world",
+	template: template
+})
 class HelloWorld extends Component {
 	$hydrate() {
 		super.$hydrate();

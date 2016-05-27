@@ -8,7 +8,7 @@ function Template(template: ArmTemplate): ClassDecorator {
 	return (target: typeof Component) => {
 		target.prototype.$template = template;
 	};
-};
+}
 
 export { Template };
 
@@ -20,7 +20,7 @@ function TagName(name: string): ClassDecorator {
 	return (target: typeof Component) => {
 		target.$tagName = name;
 	};
-};
+}
 
 export { TagName };
 
@@ -32,6 +32,6 @@ function ClassNames (...names: string[]): ClassDecorator {
 	return (target: typeof Component) => {
 		target.$classNames.push(...names);
 	};
-};
+}
 
 export { ClassNames };
