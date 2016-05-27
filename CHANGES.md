@@ -4,6 +4,7 @@
 - Deprecated old decorators, added `@Properties`
 - `$inflate` and `$deflate` now properly behave with nested components
 - Added `ComponentStore`, which is added to when `@Properties` is used
+- Removed `Object.assign` requirements, now using `object-assign`
 
 ## 0.1.4
 - Reformatted Karma configuration
