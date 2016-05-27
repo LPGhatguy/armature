@@ -198,7 +198,7 @@ export class Component {
 
 		return `<${ thisClass.$tagName }
 			class="${ thisClass.$classNames.join(" ") }"
-			data-id="${ this.$id }"
+			data-armid="${ this.$id }"
 			${ this.$label ? `data-label="${ this.$label }"` : "" }
 			>${ this.$template(this) }</${ thisClass.$tagName }>`;
 	}
@@ -224,7 +224,7 @@ export class Component {
 	 */
 	$attachTo(element: HTMLElement) {
 		this.$element = element;
-		element.setAttribute("data-id", this.$id.toString());
+		element.setAttribute("data-armid", this.$id.toString());
 
 		if (this.$label) {
 			element.setAttribute("data-label", this.$label);
@@ -239,7 +239,7 @@ export class Component {
 	$locate(parent: HTMLElement = document.body) {
 		const thisClass = <typeof Component>this.constructor;
 
-		const el = <HTMLElement>parent.querySelector(`${ thisClass.$tagName }[data-id="${ this.$id }"]`);
+		const el = <HTMLElement>parent.querySelector(`${ thisClass.$tagName }[data-armid="${ this.$id }"]`);
 
 		if (el) {
 			this.$element = el;
