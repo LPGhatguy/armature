@@ -129,11 +129,25 @@ export class Component<StateType extends {}> {
 		return null;
 	}
 
+	$setState(state: StateType) {
+		assign(this.$state, state);
+		this.$$onChange.forEach(f => f());
+	}
+
+	private $$onChange: Function[] = [];
+	$onChange(method: Function) {
+		this.$$onChange.push(method);
+	}
+
 	/**
 	 * Serializes the component's data for potential recreation.
 	 */
-	$serializeState() {
+	$packState(): any {
 		return assign({}, this.$state);
+	}
+
+	static $unpackState(state: Object): any {
+		return state;
 	}
 
 	/**
@@ -153,7 +167,7 @@ export class Component<StateType extends {}> {
 
 		return {
 			type: thisClass.$getTypeName(),
-			state: this.$serializeState(),
+			state: this.$packState(),
 			id: this.$id,
 			label: this.$label,
 			children: this.$children.map(v => v.$deflate())
@@ -170,7 +184,7 @@ export class Component<StateType extends {}> {
 		const thisClass = ComponentStore.get(deflated.type);
 
 		if (inst == null) {
-			inst = new thisClass(deflated.state);
+			inst = new thisClass(this.$unpackState(deflated.state));
 		}
 
 		inst.$id = deflated.id;
@@ -180,7 +194,7 @@ export class Component<StateType extends {}> {
 			for (const child of deflated.children) {
 				const thatClass = ComponentStore.get(child.type);
 
-				const childInst = thatClass.$for(inst, child.label, child.state);
+				const childInst = thatClass.$for(inst, child.label, thatClass.$unpackState(child.state));
 				thatClass.$inflate(child, childInst);
 			}
 		}
@@ -287,6 +301,7 @@ export class Component<StateType extends {}> {
 			);
 		}
 
+		this.$element.removeAttribute("data-arm-installed");
 		this.$element.innerHTML = this.$template(this);
 	}
 
