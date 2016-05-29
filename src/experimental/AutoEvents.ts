@@ -29,7 +29,7 @@ function wireEvents(eventMap: Map<string, string>, component: Component<any>) {
 			const method = component[methodName];
 			const domEventName = eventMap.get(eventName);
 
-			if (!domEventName) {
+			if (!domEventName || !method) {
 				return;
 			}
 
@@ -41,6 +41,7 @@ function wireEvents(eventMap: Map<string, string>, component: Component<any>) {
 const eventMap = new Map<string, string>();
 eventMap.set("onClick", "click");
 eventMap.set("onChange", "change");
+eventMap.set("onSubmit", "submit");
 
 export class Component<T> extends Armature.Component<T> {
 	$installed() {
