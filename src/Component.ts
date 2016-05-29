@@ -1,17 +1,17 @@
 import UUID from "./UUID";
-import { Template, TagName, ClassNames } from "./Decorators";
+import Attributes from "./Attributes";
 import ComponentStore from "./ComponentStore";
 
 import assign = require("object-assign");
 
-export type ArmTemplate = (component: Component) => string;
+export type Template<componentType extends Component<any>> = (component: componentType) => string;
 
 /**
  * A data structure representing one or more components.
  */
 export interface DeflatedComponent {
 	type: string;
-	data: any;
+	state: any;
 	id: string;
 	label: string;
 	children?: DeflatedComponent[];
@@ -20,9 +20,11 @@ export interface DeflatedComponent {
 /**
  * The base for all Armature components.
  */
-@TagName("arm-component")
-@Template(() => "")
-export class Component {
+@Attributes({
+	tag: "arm-template",
+	template: () => ""
+})
+export class Component<StateType extends {}> {
 	/**
 	 * A list of class names to apply to the component's root element.
 	 */
@@ -37,21 +39,21 @@ export class Component {
 	 * The template used to render this component.
 	 * Use @Template to specify the template for a component type.
 	 */
-	$template: ArmTemplate;
+	$template: Template<this>;
 
 	/**
 	 * The state backing this component.
 	 */
-	$data: any;
+	$state: StateType;
 
 	/**
-	 * The globally unique identifier for this component.
+	 * The generated globally unique identifier for this component.
 	 */
 	$id: string;
 
 	/**
-	 * The label identifying this component.
-	 * This is unique among all siblings of this component.
+	 * The given label identifying this component.
+	 * This should be unique among all siblings of this component.
 	 */
 	$label: string;
 
@@ -63,33 +65,45 @@ export class Component {
 	/**
 	 * The components this component contains.
 	 */
-	$children: Component[] = [];
+	$children: Component<any>[] = [];
 
 	/**
 	 * The component containing this component, if one exists.
 	 */
-	$parent: Component;
+	$parent: Component<any>;
 
 	/**
 	 * Creates a new component with the given data.
 	 *
 	 * @param data The data to initialize the component with
 	 */
-	constructor(data: any) {
-		this.$data = data;
+	constructor(state: StateType) {
+		if (state == null) {
+			state = this.$getDefaultState();
+
+			if (state == null) {
+				throw new Error(
+					`Component "${ this.constructor.name }" was created with no data specified!\n` +
+					`Additionally, the component's $getDefaultState method returned null.\n` +
+					`If this was intentional, override $getDefaultState to return a non-null object to use.`
+				);
+			}
+		}
+
 		this.$id = UUID.get();
+		this.$state = state;
 	}
 
 	/**
 	 * Creates or retrieves a component that is attached to another component.
 	 * Using the same parent and 'label' parameters will retrieve the same object.
-	 * Pass null to the data attribute to throw if a new component is created.
+	 * The third parameter is passed directly to the constructor of a created component.
 	 *
 	 * @param parent The component to attach to
 	 * @param label The label to use when creating or retrieving the component
-	 * @param data The data to initialize the component with if it hasn't been created
+	 * @param state The state to construct the component with if it hasn't been created.
 	 */
-	static $for(parent: Component, label: string, data: any) {
+	static $for(parent: Component<any>, label: string, state: any) {
 		const identifier = this.$getIdentifier(label);
 
 		const existing = parent.$children.find(v => v.$getIdentifier() === identifier);
@@ -98,11 +112,7 @@ export class Component {
 			return existing;
 		}
 
-		if (data === null) {
-			throw new Error("Subcomponent was created with no data!");
-		}
-
-		const inst = new this(data);
+		const inst = new this(state);
 		inst.$label = label;
 		inst.$parent = parent;
 
@@ -112,19 +122,27 @@ export class Component {
 	}
 
 	/**
+	 * Returns the default state of the component if none is given at construction time.
+	 * Returning null from this function signifies that state must be specified.
+	 */
+	$getDefaultState(): StateType {
+		return null;
+	}
+
+	/**
 	 * Serializes the component's data for potential recreation.
 	 */
-	$serializeData() {
-		return assign({}, this.$data);
+	$serializeState() {
+		return assign({}, this.$state);
 	}
 
 	/**
 	 * Returns a way to uniquely identify this component type.
 	 */
 	static $getTypeName() {
-		const classString = this.$classNames.map(v => "." + v).join("");
+		const classString = this.$classNames.join("+");
 
-		return this.$tagName + classString;
+		return this.$tagName + ";" + classString;
 	}
 
 	/**
@@ -135,7 +153,7 @@ export class Component {
 
 		return {
 			type: thisClass.$getTypeName(),
-			data: this.$serializeData(),
+			state: this.$serializeState(),
 			id: this.$id,
 			label: this.$label,
 			children: this.$children.map(v => v.$deflate())
@@ -143,24 +161,26 @@ export class Component {
 	}
 
 	/**
-	 * Creates an instance of a component from data generated by $deflate.
+	 * Creates an instance of a component from state generated by $deflate.
 	 *
-	 * @param deflated The deflated component data to use
+	 * @param deflated The deflated component state to use
 	 * @param inst An optional existing object to inflate
 	 */
-	static $inflate(deflated: DeflatedComponent, inst?: Component) {
-		if (!inst) {
-			inst = new this(deflated.data);
+	static $inflate(deflated: DeflatedComponent, inst?: Component<any>) {
+		const thisClass = ComponentStore.get(deflated.type);
+
+		if (inst == null) {
+			inst = new thisClass(deflated.state);
 		}
 
 		inst.$id = deflated.id;
 		inst.$label = deflated.label;
 
 		if (deflated.children) {
-			for (let child of deflated.children) {
+			for (const child of deflated.children) {
 				const thatClass = ComponentStore.get(child.type);
 
-				const childInst = thatClass.$for(inst, child.label, child.data);
+				const childInst = thatClass.$for(inst, child.label, child.state);
 				thatClass.$inflate(child, childInst);
 			}
 		}
@@ -191,23 +211,28 @@ export class Component {
 	}
 
 	/**
-	 * Builds the HTML associated with this component.
+	 * Returns the complete HTML used to render this component.
 	 */
 	$getHTML() {
 		const thisClass = <typeof Component>this.constructor;
 
-		return `<${ thisClass.$tagName }
-			class="${ thisClass.$classNames.join(" ") }"
-			data-armid="${ this.$id }"
-			${ this.$label ? `data-label="${ this.$label }"` : "" }
-			>${ this.$template(this) }</${ thisClass.$tagName }>`;
+		const attributes = [
+			`class="${ thisClass.$classNames.join(" ") }"`,
+			`data-arm-id="${ this.$id }"`
+		];
+
+		if (this.$label) {
+			attributes.push(`data-label="${ this.$label }"`);
+		}
+
+		return `<${ thisClass.$tagName } ${ attributes.join(" ") }>${ this.$template(this) }</${ thisClass.$tagName }>`;
 	}
 
 	/**
 	 * Creates an HTML element for this component if one does not exist.
 	 */
 	$ensureElement() {
-		if (!this.$element) {
+		if (this.$element == null) {
 			const thisClass = <typeof Component>this.constructor;
 
 			const el = document.createElement(thisClass.$tagName);
@@ -224,7 +249,7 @@ export class Component {
 	 */
 	$attachTo(element: HTMLElement) {
 		this.$element = element;
-		element.setAttribute("data-armid", this.$id.toString());
+		element.setAttribute("data-arm-id", this.$id.toString());
 
 		if (this.$label) {
 			element.setAttribute("data-label", this.$label);
@@ -239,44 +264,85 @@ export class Component {
 	$locate(parent: HTMLElement = document.body) {
 		const thisClass = <typeof Component>this.constructor;
 
-		const el = <HTMLElement>parent.querySelector(`${ thisClass.$tagName }[data-armid="${ this.$id }"]`);
+		const el = <HTMLElement>parent.querySelector(`${ thisClass.$tagName }[data-arm-id="${ this.$id }"]`);
 
-		if (el) {
+		if (el && el !== this.$element) {
 			this.$element = el;
 
-			this.$children.forEach(child => {
+			for (const child of this.$children) {
 				child.$locate(el);
-			});
-
-			return el;
+			}
 		}
 	}
 
 	/**
-	 * Evaluates the component's template and puts the result into the component's element
+	 * Evaluates the component's template and sets the component's element's HTML to the result.
 	 */
 	$render() {
+		if (this.$element == null) {
+			throw new Error(
+				`Component "${ this.constructor.name }" was rendered before it had an HTML element attached to it!\n` +
+				`When running on the server, use $getHTML() or toString() instead of calling $render().\n` +
+				`On the client, use $reify(). Use $attachTo() beforehand to render into an existing HTML element.`
+			);
+		}
+
 		this.$element.innerHTML = this.$template(this);
+	}
+
+	$shouldInstall() {
+		return this.$element.getAttribute("data-arm-installed") == null;
 	}
 
 	/**
 	 * Attaches event handlers for the component and its children.
 	 * Often used after $render, or as part of $reify.
 	 */
-	$hydrate() {
-		for (let child of this.$children) {
-			if (child.$locate(this.$element)) {
-				child.$hydrate();
+	$install() {
+		for (const child of this.$children) {
+			if (child.$element != null) {
+				child.$install();
 			}
+		}
+
+		if (this.$shouldInstall()) {
+			this.$element.setAttribute("data-arm-installed", "");
+
+			this.$installed();
 		}
 	}
 
+	$installed() {
+	}
+
+	$shouldUninstall() {
+		return this.$element.getAttribute("data-arm-installed") != null;
+	}
+
 	/**
-	 * Ensures this component's element exists, then renders and hydrates it.
+	 * Detaches event handlers for the component and its children.
+	 */
+	$uninstall() {
+		for (const child of this.$children) {
+			child.$uninstall();
+		}
+
+		if (this.$shouldUninstall()) {
+			this.$element.removeAttribute("data-arm-installed");
+
+			this.$uninstalled();
+		}
+	}
+
+	$uninstalled() {
+	}
+
+	/**
+	 * Ensures this component's element exists, then renders and installs it.
 	 */
 	$reify() {
 		this.$ensureElement();
 		this.$render();
-		this.$hydrate();
+		this.$install();
 	}
 }

@@ -1,16 +1,19 @@
-import { Component, ArmTemplate } from "./Component";
+import * as Armature from "./Component";
 import ComponentStore from "./ComponentStore";
 
 interface PropertyData {
 	tag: string;
-	template: ArmTemplate;
+	template: Armature.Template<any>;
 	classes?: string[];
 }
 
 export { PropertyData };
 
-function Properties(data: PropertyData): ClassDecorator {
-	return (target: typeof Component) => {
+/**
+ * Sets the Armature attributes of a given class.
+ */
+function Attributes(data: PropertyData): ClassDecorator {
+	return (target: typeof Armature.Component) => {
 		target.prototype.$template = data.template;
 		target.$tagName = data.tag;
 
@@ -22,4 +25,4 @@ function Properties(data: PropertyData): ClassDecorator {
 	};
 }
 
-export { Properties };
+export default Attributes;

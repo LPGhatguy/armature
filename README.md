@@ -14,24 +14,23 @@ Armature releases are compiled to ES5 and should run on any compliant ES5 runtim
 
 ### ES6 and TypeScript
 ```js
-import { Component } from "armature";
+import * as Armature from "armature";
 
-console.log(Component) // yay
+console.log(Armature.Component) // yay
 ```
 
 ### CommonJS (Node and Browserify)
 ```js
-const armature = require("armature");
-const Component = armature.Component;
+const Armature = require("armature");
 
-console.log(Component) // yay
+console.log(Armature.Component) // yay
 ```
 
 ### Global
-Armature is exposed as `armature` when no module system is detected.
+Armature is exposed as `Armature` when no module system is detected.
 
 ```js
-console.log(armature.Component); // yay
+console.log(Armature.Component); // yay
 ```
 
 ## Examples

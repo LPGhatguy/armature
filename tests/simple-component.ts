@@ -1,4 +1,4 @@
-import { Component, TagName, Template } from "../";
+import * as Armature from "../";
 import { expect } from "chai";
 
 declare var global;
@@ -6,22 +6,19 @@ declare var global;
 const isBrowser = !!global.document;
 
 describe("A simple component", () => {
-	const template = (component: Simple) => `
-		We have this: ${ component.$data.x }
+	const template: Armature.Template<Simple> = (component) => `
+		We have this: ${ component.$state.x }
 	`;
 
 	interface SimpleData {
 		x: number;
 	}
 
-	@TagName("simple-component")
-	@Template(template)
-	class Simple extends Component {
-		$data: SimpleData;
-
-		constructor(params: SimpleData) {
-			super(params);
-		}
+	@Armature.Attributes({
+		tag: "simple-component",
+		template: template
+	})
+	class Simple extends Armature.Component<SimpleData> {
 	}
 
 	if (isBrowser) {

@@ -23,7 +23,7 @@ const server = {
 		noLib: true
 	},
 	browserify: {
-		standalone: "armature",
+		standalone: "Armature",
 		bare: true
 	}
 };

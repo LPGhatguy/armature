@@ -1,4 +1,4 @@
-import { Component, TagName, Template } from "../";
+import * as Armature from "../";
 import { expect } from "chai";
 
 declare var global;
@@ -6,13 +6,15 @@ declare var global;
 const isBrowser = !!global.document;
 
 describe("A nesting component", () => {
-	const template = (component: Parent) => `
+	const template: Armature.Template<Parent> = (component) => `
 		This is a child: ${ Child.$for(component, "", null) }
 	`;
 
-	@TagName("parent-component")
-	@Template(template)
-	class Parent extends Component {
+	@Armature.Attributes({
+		tag: "parent-component",
+		template: template
+	})
+	class Parent extends Armature.Component<{}> {
 		constructor(data: any) {
 			super(data);
 
@@ -20,8 +22,11 @@ describe("A nesting component", () => {
 		}
 	}
 
-	@TagName("child-component")
-	class Child extends Component {
+	@Armature.Attributes({
+		tag: "child-component",
+		template: () => ""
+	})
+	class Child extends Armature.Component<{}> {
 	}
 
 	it("should recall children correctly", () => {

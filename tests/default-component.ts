@@ -10,10 +10,10 @@ describe("The default component", () => {
 		const inst = new Component({});
 	});
 
-	it("should store the given data", () => {
+	it("should store the given state", () => {
 		const inst = new Component({ x: 5 });
 
-		expect(inst.$data.x).to.equal(5);
+		expect(inst.$state.x).to.equal(5);
 	});
 
 	it("should produce HTML when asked", () => {
@@ -23,12 +23,12 @@ describe("The default component", () => {
 		expect(body).to.contain(Component.$tagName);
 	});
 
-	it("should properly serialize data", () => {
+	it("should properly serialize state", () => {
 		const inst = new Component({ x: 5 });
-		const serialized = inst.$serializeData();
+		const serialized = inst.$serializeState();
 
-		expect(serialized.x).to.equal(inst.$data.x);
-		expect(serialized).to.not.equal(inst.$data);
+		expect(serialized.x).to.equal(inst.$state.x);
+		expect(serialized).to.not.equal(inst.$state);
 	});
 
 	it("should be deflatable", () => {
@@ -36,7 +36,7 @@ describe("The default component", () => {
 
 		const deflated = inst.$deflate();
 
-		expect(deflated.data.x).to.equal(5);
+		expect(deflated.state.x).to.equal(5);
 	});
 
 	it("should be inflatable", () => {
@@ -45,7 +45,7 @@ describe("The default component", () => {
 		const deflated = inst.$deflate();
 		const reinst = Component.$inflate(deflated);
 
-		expect(reinst.$data.x).to.equal(5);
+		expect(reinst.$state.x).to.equal(5);
 	});
 
 	it("should expose a consistent identifier", () => {
