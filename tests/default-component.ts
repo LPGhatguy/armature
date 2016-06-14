@@ -13,28 +13,28 @@ describe("The default component", () => {
 	it("should store the given state", () => {
 		const inst = new Component({ x: 5 });
 
-		expect(inst.$state.x).to.equal(5);
+		expect(inst.state.x).to.equal(5);
 	});
 
 	it("should produce HTML when asked", () => {
 		const inst = new Component({});
 
 		const body = inst.toString();
-		expect(body).to.contain(Component.$tagName);
+		expect(body).to.contain(Component.htmlTagName);
 	});
 
 	it("should properly serialize state", () => {
 		const inst = new Component({ x: 5 });
-		const serialized = inst.$packState();
+		const serialized = inst.packState();
 
-		expect(serialized.x).to.equal(inst.$state.x);
-		expect(serialized).to.not.equal(inst.$state);
+		expect(serialized.x).to.equal(inst.state.x);
+		expect(serialized).to.not.equal(inst.state);
 	});
 
 	it("should be deflatable", () => {
 		const inst = new Component({ x: 5 });
 
-		const deflated = inst.$deflate();
+		const deflated = inst.deflate();
 
 		expect(deflated.state.x).to.equal(5);
 	});
@@ -42,47 +42,47 @@ describe("The default component", () => {
 	it("should be inflatable", () => {
 		const inst = new Component({ x: 5 });
 
-		const deflated = inst.$deflate();
-		const reinst = Component.$inflate(deflated);
+		const deflated = inst.deflate();
+		const reinst = Component.inflate(deflated);
 
-		expect(reinst.$state.x).to.equal(5);
+		expect(reinst.state.x).to.equal(5);
 	});
 
 	it("should expose a consistent identifier", () => {
 		const inst = new Component({});
 
-		expect(inst.$getIdentifier()).to.equal(Component.$getIdentifier(inst.$label));
+		expect(inst.getIdentifier()).to.equal(Component.getIdentifier(inst.label));
 	});
 
 	it("should properly nest", () => {
 		const parent = new Component({});
-		const child = Component.$for(parent, "", {});
+		const child = Component.for(parent, "", {});
 
-		expect(parent.$children).to.contain(child);
+		expect(parent.children).to.contain(child);
 	});
 
 	if (isBrowser) {
 		it("should have an element after being ensured", () => {
 			const inst = new Component({});
-			inst.$ensureElement();
+			inst.ensureElement();
 
-			expect(inst.$element).to.be.instanceof(Element);
+			expect(inst.element).to.be.instanceof(Element);
 		});
 
 		it("should created an element when reified", () => {
 			const inst = new Component({});
-			inst.$reify();
+			inst.reify();
 
-			expect(inst.$element).to.be.instanceof(Element);
+			expect(inst.element).to.be.instanceof(Element);
 		});
 
 		it("should attach to existing elements", () => {
 			const inst = new Component({});
 
 			const el = document.createElement("arm-component");
-			inst.$attachTo(el);
+			inst.attachTo(el);
 
-			expect(inst.$element).to.equal(el);
+			expect(inst.element).to.equal(el);
 		});
 	}
 });

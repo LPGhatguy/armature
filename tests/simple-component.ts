@@ -7,7 +7,7 @@ const isBrowser = !!global.document;
 
 describe("A simple component", () => {
 	const template: Armature.Template<Simple> = (component) => `
-		We have this: ${ component.$state.x }
+		We have this: ${ component.state.x }
 	`;
 
 	interface SimpleData {
@@ -24,9 +24,9 @@ describe("A simple component", () => {
 	if (isBrowser) {
 		it("should render with the correct markup", () => {
 			const inst = new Simple({ x: 5 });
-			inst.$reify();
+			inst.reify();
 
-			expect(inst.$element.innerHTML).to.equal(inst.$template(inst));
+			expect(inst.element.innerHTML).to.equal(inst.template(inst));
 		});
 	}
 });
