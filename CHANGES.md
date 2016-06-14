@@ -1,12 +1,16 @@
 # Armature Change Log
 
 ## 1.0.0-alpha3
+**This is a major, breaking release. Upgrade with care.**
 
 ### Breaking
+- Methods no longer have `$` preceding them
 - Components now require a `StateType` type parameter
 	- Old `Component` is now `Component<any>`
 	- This sets the type of the `$state` property and the default constructor
 - Removed deprecated decorators (`@Template`, `@TagName`, `@ClassNames`)
+- Renamed `$tagName` to `htmlTagName`
+- Renamed `$classNames` to `htmlClassNames`
 - Renamed `@Properties` to `@Attributes`
 - Renamed `ArmTemplate` interface to `Armature.Template`
 - Renamed `$data` to `$state`
@@ -19,8 +23,8 @@
 - Added `$uninstall` method to complement `$install`
 - Added `$installed` and `$uninstalled` to be used instead of overriding `$install` and `$uninstall`
 - Added `$getDefaultState` method
-	- If `null` or `undefined` are passed as a state, this will be used instead.
-	- If this function returns `null`, then a `null` or `undefined` state will be considered an error by both the default constructor and `Component.$for`.
+	- If `null` or `undefined` are passed as a state, this will be used instead
+	- If this function returns `null`, then a `null` or `undefined` state will be considered an error by both the default constructor and `Component.$for`
 
 ### Minor
 - Components now throw errors with instructions to guide developers in the correct direction and correct common mistakes
