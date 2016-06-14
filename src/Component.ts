@@ -315,6 +315,10 @@ export class Component<StateType extends {}> {
 	 */
 	$install() {
 		for (const child of this.$children) {
+			if (child.$element == null || !this.$element.contains(child.$element)) {
+				child.$locate(this.$element);
+			}
+
 			if (child.$element != null) {
 				child.$install();
 			}
