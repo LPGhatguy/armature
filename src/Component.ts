@@ -4,7 +4,11 @@ import ComponentStore from "./ComponentStore";
 
 import assign = require("object-assign");
 
-export type Template<componentType extends Component<any>> = (component: componentType) => string;
+export interface Stringable {
+	toString(): string;
+}
+
+export type Template<componentType extends Component<any>> = (component: componentType) => Stringable;
 
 /**
  * A data structure representing one or more components.
@@ -71,6 +75,11 @@ export class Component<StateType extends {}> {
 	 * The component containing this component, if one exists.
 	 */
 	parent: Component<any>;
+
+	/**
+	 * A flag telling ekma that this object yields HTML
+	 */
+	private safeInHTML = true;
 
 	/**
 	 * Creates a new component with the given data.
@@ -302,7 +311,7 @@ export class Component<StateType extends {}> {
 		}
 
 		this.element.removeAttribute("data-arm-installed");
-		this.element.innerHTML = this.template(this);
+		this.element.innerHTML = this.template(this).toString();
 	}
 
 	shouldInstall() {
