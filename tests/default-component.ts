@@ -25,7 +25,7 @@ describe("The default component", () => {
 
 	it("should properly serialize state", () => {
 		const inst = new Component({ x: 5 });
-		const serialized = inst.$serializeState();
+		const serialized = inst.$packState();
 
 		expect(serialized.x).to.equal(inst.$state.x);
 		expect(serialized).to.not.equal(inst.$state);
