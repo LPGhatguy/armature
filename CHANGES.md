@@ -4,7 +4,7 @@
 **This is a major, breaking release. Upgrade with care.**
 
 ### Breaking
-- Methods no longer have `$` preceding them
+- Members no longer have `$` preceding them!
 - Components now require a `StateType` type parameter
 	- Old `Component` is now `Component<any>`
 	- This sets the type of the `$state` property and the default constructor
@@ -13,23 +13,23 @@
 - Renamed `$classNames` to `htmlClassNames`
 - Renamed `@Properties` to `@Attributes`
 - Renamed `ArmTemplate` interface to `Armature.Template`
-- Renamed `$data` to `$state`
+- Renamed `$data` to `state`
 	- Type is now dynamic instead of always `any`
-- Renamed `$serializeData` to `$serializeState`
-- Renamed `$hydrate` to `$install`
+- Renamed `$serializeData` to `serializeState`
+- Renamed `$hydrate` to `install`
 - Global bundle is now exposed as `Armature` instead of `armature`
 
 ### Major
-- Added `$uninstall` method to complement `$install`
-- Added `$installed` and `$uninstalled` to be used instead of overriding `$install` and `$uninstall`
-- Added `$getDefaultState` method
+- Added `uninstall` method to complement `install`
+- Added `installed` and `uninstalled` to be used instead of overriding `install` and `uninstall`
+- Added `getDefaultState` method
 	- If `null` or `undefined` are passed as a state, this will be used instead
-	- If this function returns `null`, then a `null` or `undefined` state will be considered an error by both the default constructor and `Component.$for`
+	- If this function returns `null`, then a `null` or `undefined` state will be considered an error by both the default constructor and `Component.for`
 
 ### Minor
 - Components now throw errors with instructions to guide developers in the correct direction and correct common mistakes
-- Components now behave as expected when calling `Component.$inflate` to inflate data instead of using the data's expected class.
-- `$getTypeName` no longer returns a string that looks like a CSS selector, to prevent misuse.
+- Components now behave as expected when calling `Component.inflate` to inflate data instead of using the data's expected class.
+- `getTypeName` no longer returns a string that looks like a CSS selector, to prevent misuse.
 - Recommended Armature import is now `import * as Armature from "armature"`
 - Added experimental automatic event hooking support in `Armature.AutoEvents`: this is a test and a work in progress!
 
