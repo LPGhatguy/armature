@@ -1,17 +1,15 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-		"target": "ES5",
+		"target": "ES6",
 		"moduleResolution": "node",
 		"experimentalDecorators": true,
 		"noEmitOnError": true,
-		"noLib": true,
 		"allowJs": true
 	},
 	"files": [
 		"src/index.ts",
 		"tests/main.js",
-		"typings/index.d.ts",
-		"node_modules/typescript/lib/lib.es6.d.ts"
+		"typings/index.d.ts"
 	]
 }
