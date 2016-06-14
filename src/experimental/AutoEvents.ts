@@ -13,11 +13,11 @@ const Event = (target: any, key: string) => {
 export { Event };
 
 function wireEvents(eventMap: Map<string, string>, component: Component<any>) {
-	const container = component.$element;
-	const els = <HTMLElement[]>Array.from(component.$element.querySelectorAll("[data-events]"));
+	const container = component.element;
+	const els = <HTMLElement[]>Array.from(component.element.querySelectorAll("[data-events]"));
 
-	if (component.$element.getAttribute("data-events")) {
-		els.push(component.$element);
+	if (component.element.getAttribute("data-events")) {
+		els.push(component.element);
 	}
 
 	els.forEach(el => {
@@ -44,8 +44,8 @@ eventMap.set("onChange", "change");
 eventMap.set("onSubmit", "submit");
 
 export class Component<T> extends Armature.Component<T> {
-	$installed() {
-		super.$installed();
+	installed() {
+		super.installed();
 
 		wireEvents(eventMap, this);
 	}

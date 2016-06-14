@@ -8,7 +8,7 @@ const ComponentStore = {
 	 * Automatically called by @Attributes
 	 */
 	register(componentType: typeof Component) {
-		this.store.set(componentType.$getTypeName(), componentType);
+		this.store.set(componentType.getTypeName(), componentType);
 	},
 
 	/**

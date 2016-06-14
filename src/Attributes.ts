@@ -14,11 +14,11 @@ export { PropertyData };
  */
 function Attributes(data: PropertyData): ClassDecorator {
 	return (target: typeof Armature.Component) => {
-		target.prototype.$template = data.template;
-		target.$tagName = data.tag;
+		target.prototype.template = data.template;
+		target.htmlTagName = data.tag;
 
 		if (data.classes) {
-			target.$classNames = [...target.$classNames, ...data.classes];
+			target.htmlClassNames = [...target.htmlClassNames, ...data.classes];
 		}
 
 		ComponentStore.register(target);
