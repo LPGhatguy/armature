@@ -203,8 +203,8 @@ export class Component<StateType extends {}> {
 			for (const child of deflated.children) {
 				const thatClass = ComponentStore.get(child.type);
 
-				const childInst = thatClass.for(inst, child.label, thatClass.$unpackState(child.state));
-				thatClass.$inflate(child, childInst);
+				const childInst = thatClass.for(inst, child.label, thatClass.unpackState(child.state));
+				thatClass.inflate(child, childInst);
 			}
 		}
 

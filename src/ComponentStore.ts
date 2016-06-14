@@ -14,7 +14,7 @@ const ComponentStore = {
 	/**
 	 * Retrieves the component for the given type name.
 	 */
-	get(typeName: string) {
+	get(typeName: string): typeof Component {
 		return this.store.get(typeName);
 	}
 };
