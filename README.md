@@ -39,7 +39,7 @@ console.log(Armature.Component); // yay
 Components start with classes that extend Armature's base `Component`. They're decorated to include data about the component.
 
 ```ts
-import { Component, Properties } from "@lpghatguy/armature";
+import { Component, Properties } from "armature";
 
 const template = (component) => `
 	We have this name: ${ component.$data.name }
