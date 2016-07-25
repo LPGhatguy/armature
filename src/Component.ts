@@ -1,6 +1,7 @@
 import UUID from "./UUID";
 import Attributes from "./Attributes";
 import ComponentStore from "./ComponentStore";
+import { DeprecatedMethod } from "./Deprecated";
 
 import assign = require("object-assign");
 
@@ -19,6 +20,11 @@ export interface DeflatedComponent {
 	id: string;
 	label: string;
 	children?: DeflatedComponent[];
+}
+
+export interface ComponentClass<ComponentType extends Component<StateType>, StateType extends {}> {
+	new(state: StateType): ComponentType;
+	getIdentifier(label: string): string;
 }
 
 /**
@@ -104,6 +110,8 @@ export class Component<StateType extends {}> {
 	}
 
 	/**
+	 * Deprecated: use Parent.getChild and Child.setParent instead.
+	 *
 	 * Creates or retrieves a component that is attached to another component.
 	 * Using the same parent and 'label' parameters will retrieve the same object.
 	 * The third parameter is passed directly to the constructor of a created component.
@@ -112,6 +120,7 @@ export class Component<StateType extends {}> {
 	 * @param label The label to use when creating or retrieving the component
 	 * @param state The state to construct the component with if it hasn't been created.
 	 */
+	@DeprecatedMethod("Armature: Component.for was deprecated in favor of Parent.getChild and Child.setParent in 1.0.0-alpha4")
 	static for(parent: Component<any>, label: string, state: any) {
 		const identifier = this.getIdentifier(label);
 
@@ -128,6 +137,47 @@ export class Component<StateType extends {}> {
 		parent.children.push(inst);
 
 		return inst;
+	}
+
+	/**
+	 * Returns the child component of the given type and label, if it exists.
+	 * Returns a Component<any>, requires casting to the type passed to the function.
+	 *
+	 * @param childClass The child's type to search for.
+	 * @param label The child's label to search for.
+	 */
+	getChild(childClass: typeof Component, label: string): Component<any> {
+		const id = childClass.getIdentifier(label);
+		return this.children.find(v => v.getIdentifier() === id);
+	}
+
+	/**
+	 * Sets the label of the component and returns it.
+	 *
+	 * @param label The label to set.
+	 */
+	setLabel(label: string) {
+		this.label = label;
+
+		return this;
+	}
+
+	/**
+	 * Sets this component to be a child of the given component.
+	 * A component can only be the child of one component.
+	 * This method unsets an existing parent if one was set.
+	 *
+	 * @param parent The component to contain this one.
+	 */
+	setParent(parent: Component<any>) {
+		if (this.parent) {
+			this.parent.children = this.parent.children.filter(v => v !== this);
+		}
+
+		this.parent = parent;
+		parent.children.push(this);
+
+		return this;
 	}
 
 	/**

@@ -56,7 +56,8 @@ describe("The default component", () => {
 
 	it("should properly nest", () => {
 		const parent = new Component({});
-		const child = Component.for(parent, "", {});
+		const child = new Component({})
+			.setParent(parent);
 
 		expect(parent.children).to.contain(child);
 	});

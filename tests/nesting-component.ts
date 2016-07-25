@@ -7,7 +7,7 @@ const isBrowser = !!global.document;
 
 describe("A nesting component", () => {
 	const template: Armature.Template<Parent> = (component) => `
-		This is a child: ${ Child.for(component, "", null) }
+		This is a child: ${ component.getChild(Child, "") }
 	`;
 
 	@Armature.Attributes({
@@ -18,7 +18,9 @@ describe("A nesting component", () => {
 		constructor(data: any) {
 			super(data);
 
-			Child.for(this, "", {});
+			new Child({})
+				.setLabel("")
+				.setParent(this);
 		}
 	}
 
@@ -31,7 +33,7 @@ describe("A nesting component", () => {
 
 	it("should recall children correctly", () => {
 		const parent = new Parent({});
-		const child = Child.for(parent, "", null);
+		const child = parent.getChild(Child, "");
 
 		expect(parent.children[0]).to.equal(child);
 	});
@@ -48,7 +50,7 @@ describe("A nesting component", () => {
 			const parent = new Parent({});
 			parent.reify();
 
-			const child = Child.for(parent, "", null);
+			const child = parent.getChild(Child, "");
 			expect(child.element).to.be.instanceof(Element);
 		});
 	}
