@@ -1,5 +1,45 @@
 # Armature Change Log
 
+## HEAD
+- Deprecated `Component.for`, now prints a warning
+- Added `Component#getChild`, which functions similarly to `Component.for` when retrieving an existing component
+- Added `Component#setParent`, which sets the component's parent.
+- Added `Component#setLabel`, a convenience method to set the component's label and return it.
+
+### Example Code Changes
+
+Code to create a new child component used to look like this:
+
+```ts
+const parent = new Component({});
+const child = child.for(parent, "label", {});
+```
+
+It now looks like this:
+
+```ts
+const parent = new Component({});
+const child = new Child()
+	.setLabel("label")
+	.setParent(parent);
+```
+
+Additionally, code that used to retrieve an existing child component looked like this:
+
+```ts
+const child = Child.for(parent, "label", null);
+```
+
+Passing `null` caused an exception to be raised if the child didn't exist, which was kind of strange.
+
+Now, with the new split methods, the above looks like this:
+
+```ts
+const child = parent.getChild(Child, "label");
+```
+
+No errors are thrown if the child doesn't exist, the returned value will simply be falsy.
+
 ## 1.0.0-alpha3
 **This is a major, breaking release. Upgrade with care.**
 

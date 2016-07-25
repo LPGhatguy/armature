@@ -110,7 +110,7 @@ export class Component<StateType extends {}> {
 	}
 
 	/**
-	 * Deprecated: use Parent.getChild and Child.setParent instead.
+	 * Deprecated: use Parent#getChild and Child#setParent instead.
 	 *
 	 * Creates or retrieves a component that is attached to another component.
 	 * Using the same parent and 'label' parameters will retrieve the same object.
