@@ -1,6 +1,6 @@
 # Armature Change Log
 
-## HEAD
+## 1.0.0-alpha4
 - Deprecated `Component.for`, now prints a warning
 - Added `Component#getChild`, which functions similarly to `Component.for` when retrieving an existing component
 - Added `Component#setParent`, which sets the component's parent.
