@@ -1,6 +1,7 @@
 {
   "name": "armature",
   "version": "1.0.0-alpha4",
+  "private": true,
   "description": "Modern component model for ES6",
   "main": "es5/index.js",
   "typings": "es5/index.d.ts",
