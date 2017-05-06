@@ -3,7 +3,7 @@
 npm install armature --save
 ```
 
-**No longer maintained! I've transitioned to using React in projects where I would previously use Armature. State updates are simpler and less explicit, and lots of companies back it!*
+**No longer maintained! I've transitioned to using React in projects where I would previously use Armature. State updates are simpler and less explicit, and lots of companies back it!**
 
 Armature is a modern component model targeted at TypeScript and ES2015+ workflows. It runs in browsers and servers alike, allowing for a full-featured isomorphic view system without the complexity of larger frameworks.
 
